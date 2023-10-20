@@ -1,0 +1,37 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HelloWorld Dapp</title>
+</head>
+<body>
+    <h1>HelloWorld Dapp</h1>
+    <p id="message"></p>
+    <button id="getMessage">Get Message</button>
+
+    <script>
+        async function init() {
+            const contractAddress = "CONTRACT_ADDRESS"; // Replace with your contract address
+            const web3 = new Web3(window.ethereum);
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const messageElement = document.getElementById("message");
+            const getMessageButton = document.getElementById("getMessage");
+
+            getMessageButton.addEventListener("click", async () => {
+                const message = await contract.methods.getMessage().call();
+                messageElement.textContent = message;
+            });
+
+            if (window.ethereum) {
+                window.ethereum.enable().then(async function () {
+                    const accounts = await web3.eth.getAccounts();
+                    web3.eth.defaultAccount = accounts[0];
+                });
+            }
+        }
+
+        window.addEventListener("load", init);
+    </script>
+</body>
+</html>
